@@ -1,0 +1,36 @@
+@startuml
+
+actor Engine
+
+participant "DI Container" as DI
+participant "Processor (Resolved)" as Processor
+participant "Orchestration Mapper" as Orchestrator
+participant "Sub Mapper (Concrete)" as Mapper
+
+== 1. Resolve Processor ==
+Engine -> DI: Resolve(Task.Type)
+DI --> Engine: ITaskProcessor
+
+== 2. Execute Task ==
+Engine -> Processor: Execute(Task)
+Processor --> Engine: Result
+
+== 3. Resolve Mapping ==
+Engine -> Orchestrator: Map(Result, NextTask.InputType)
+
+alt Mapping exists
+    Orchestrator -> Mapper: Select matching IMapper<T, U>
+    Mapper --> Orchestrator: TaskInput
+    Orchestrator --> Engine: TaskInput
+else no mapping
+    Orchestrator --> Engine: ERROR (Incompatible Chain)
+    return
+end
+
+== 4. Continue Chain ==
+Engine -> Engine: Inject TaskInput into Next Task
+Engine -> DI: Resolve Next Task Processor
+DI --> Engine: Processor
+Engine -> Processor: Execute(Next Task)
+
+@enduml

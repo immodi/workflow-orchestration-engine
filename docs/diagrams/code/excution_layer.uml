@@ -1,0 +1,65 @@
+@startuml
+
+skinparam packageStyle rectangle
+
+' =====================================================
+' ORCHESTRATION MAPPER (CORE RESOLVER)
+' =====================================================
+
+class OrchestrationMapper {
+  +Map(result: Result, targetInputType: Type): TaskInput
+  +ResolveMapper(resultType: Type, targetType: Type): IMapper
+  +ValidateCompatibility(resultType: Type, targetType: Type): bool
+}
+
+' =====================================================
+' MAPPER HIERARCHY (TRANSFORMATION LAYER)
+' =====================================================
+
+interface IMapper<TSource, TTarget> {
+  +Map(source: TSource): TTarget
+}
+
+class AdditionToEmailMapper {
+  +Map(source: AdditionResult): EmailInput
+}
+
+class HttpToTransformMapper {
+  +Map(source: HttpResult): TransformInput
+}
+
+class GenericResultMapper {
+  +Map(source: Result): TaskInput
+}
+
+IMapper <|.. AdditionToEmailMapper
+IMapper <|.. HttpToTransformMapper
+IMapper <|.. GenericResultMapper
+
+OrchestrationMapper --> IMapper : resolves / uses
+
+' =====================================================
+' PROCESSOR HIERARCHY (EXECUTION LAYER)
+' =====================================================
+
+interface ITaskProcessor<TTask, TResult> {
+  +Execute(task: TTask): TResult
+}
+
+class AdditionTaskProcessor {
+  +Execute(task: AdditionTask): AdditionResult
+}
+
+class HttpTaskProcessor {
+  +Execute(task: HttpTask): HttpResult
+}
+
+class EmailTaskProcessor {
+  +Execute(task: EmailTask): EmailResult
+}
+
+ITaskProcessor <|.. AdditionTaskProcessor
+ITaskProcessor <|.. HttpTaskProcessor
+ITaskProcessor <|.. EmailTaskProcessor
+
+@enduml
