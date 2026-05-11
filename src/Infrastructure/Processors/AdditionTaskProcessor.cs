@@ -3,10 +3,10 @@ using WorkflowOrchestrationEngine.Domain.Tasks.Addition;
 
 namespace WorkflowOrchestrationEngine.Infrastructure.Processors;
 
-public class AdditionTaskProcessor : ITaskProcessor<AdditionTask, AdditionResult>
+public class AdditionTaskProcessor : ITaskProcessor<AdditionTask, AdditionResultBase>
 {
-    public AdditionResult Execute(AdditionTask task)
+    public AdditionResultBase Execute(AdditionTask task)
     {
-        return new AdditionResultImplementation(task.Input.Primary + task.Input.Secondary);
+        return new AdditionResult(task.Input.Primary + task.Input.Secondary);
     }
 }
