@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddAdditionProcessor(this IServiceCollection services)
     {
         services.AddScoped<ITaskProcessor<AdditionTask, AdditionResultBase>, AdditionTaskProcessor>();
+        services.AddScoped<ITaskProcessor<StringifyTask, StringifyResultBase>, StringifyTaskProcessor>();
         return services;
     }
 
