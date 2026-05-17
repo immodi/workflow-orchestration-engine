@@ -5,7 +5,7 @@ namespace WorkflowOrchestrationEngine.Domain.Tasks.Stringify;
 
 public class StringifyTaskInput(object source)
 {
-    public object Source { get; set; } = source;
+    public object Source { get; } = source;
 }
 
 

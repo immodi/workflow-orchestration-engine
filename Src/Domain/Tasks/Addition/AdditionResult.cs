@@ -2,9 +2,12 @@ using WorkflowOrchestrationEngine.Domain.Models;
 
 namespace WorkflowOrchestrationEngine.Domain.Tasks.Addition;
 
-public abstract class AdditionResultBase(int output) : Result
+public abstract class AdditionResultBase : Result
 {
-    public int Output { get; } = output;
+    protected AdditionResultBase(int output)
+    {
+        Output = output;
+    }
 }
 
 public class AdditionResult(int output) : AdditionResultBase(output);
