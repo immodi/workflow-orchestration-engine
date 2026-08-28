@@ -1,4 +1,5 @@
-using WorkflowOrchestrationEngine.Infrastructure.TaskProcessors;
+using WorkflowOrchestrationEngine.Application.Interfaces;
+using WorkflowOrchestrationEngine.Infrastructure.Processors;
 
 namespace WorkflowOrchestrationEngine.Infrastructure;
 
@@ -6,8 +7,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddProcessors(this IServiceCollection services)
     {
-        services.AddScoped<AdditionProcessor, AdditionProcessorImpl>(); 
-        services.AddScoped<StringifyProcessor, StringifyProcessorImpl>(); 
+        services.AddScoped<IProcessorDispatcher, ProcessorDispatcher>();        
         
         return services;
     }
